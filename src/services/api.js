@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export function setTokenHeader(token) {
 	if (token) {
+		console.log('lolee');
 		axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	} else {
 		delete axios.defaults.headers.common['Authorization'];
@@ -38,7 +39,8 @@ export function apiCallWithToken(method, path, data) {
 				return resolve(res.data);
 			})
 			.catch((err) => {
-				return reject(err.response.data.error);
+				console.log(err);
+				//return reject(err.response.data.error);
 			});
 	});
 }
