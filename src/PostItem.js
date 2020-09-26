@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles/PostItemStyles';
 import { UserContext } from './context/user.context';
+import { PostContext } from './context/post.context';
 import AddCommentForm from './AddCommentForm';
 import moment from 'moment';
 import clsx from 'clsx';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
 	CardActions,
@@ -21,10 +23,11 @@ import {
 	Badge,
 	Grid
 } from '@material-ui/core';
+import MyPopper from './MyPopper';
 function PostItem({ post, classes }) {
 	const [ expanded, setExpanded ] = React.useState(false);
-	let { userDict } = useContext(UserContext);
-
+	let { user, userDict } = useContext(UserContext);
+	let { addRemoveLike } = useContext(PostContext);
 	const getUser = (userId) => {
 		let User = null;
 		if (userDict === null) {
@@ -40,6 +43,13 @@ function PostItem({ post, classes }) {
 
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
+	};
+
+	const handleLike = () => {
+		if (user !== null) {
+			const type = post.likes.indexOf(user.id) === -1 ? 'like' : 'unlike';
+			addRemoveLike(user.id, post._id, type);
+		}
 	};
 
 	const postComments = post.comments.map((comment, i) => {
@@ -89,9 +99,11 @@ function PostItem({ post, classes }) {
 			<Card className={classes.root}>
 				<Grid container direction="row" justify="flex-start" alignItems="center">
 					<CardHeader
+						className={classes.header}
 						avatar={<Avatar alt={post.postedBy.username} src={post.postedBy.profileImageUrl} />}
 						title={post.postedBy.username}
 						subheader={moment(post.createdAt).format('Do MMM, YY')}
+						action={<MyPopper userId={post.postedBy._id} postId={post._id} />}
 					/>
 				</Grid>
 				{post.isImage && <CardMedia className={classes.media} image={post.imageUrl} title={post.text} />}
@@ -103,9 +115,13 @@ function PostItem({ post, classes }) {
 					</CardContent>
 				</Grid>
 				<CardActions disableSpacing>
-					<IconButton aria-label="add to favorites">
+					<IconButton aria-label="add to favorites" onClick={handleLike}>
 						<Badge badgeContent={post.likes.length} color="secondary">
-							<FavoriteIcon />
+							{user !== null && post.likes.indexOf(user.id) === -1 ? (
+								<FavoriteBorderIcon />
+							) : (
+								<FavoriteIcon />
+							)}
 						</Badge>
 					</IconButton>
 					<IconButton

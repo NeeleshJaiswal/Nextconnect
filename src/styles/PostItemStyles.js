@@ -37,6 +37,9 @@ const styles = (theme) => ({
 	nomargin: {
 		marginTop: 0,
 		marginLeft: theme.spacing(1)
+	},
+	header: {
+		width: '100%'
 	}
 });
 

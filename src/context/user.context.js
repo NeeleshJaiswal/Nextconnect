@@ -1,17 +1,27 @@
 import React, { useState, createContext } from 'react';
-import { apiCall } from '../services/api';
+import { apiCall, setTokenHeader } from '../services/api';
 export const UserContext = createContext();
 
 export function UserProvider(props) {
 	const [ user, setUser ] = useState(null);
 	const [ userDict, setUserDict ] = useState(null);
 
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux');
+
+	// 		setData(result.data);
+	// 	};
+
+	// 	fetchData();
+	// }, []);
+
 	const changeUser = (type, userData) => {
 		return new Promise((resolve, reject) => {
 			return apiCall('post', `http://localhost:8081/api/auth/${type}`, userData)
 				.then(({ token, ...user }) => {
 					localStorage.setItem('token', token);
-					//setTokenHeader(token);
+					setTokenHeader(token);
 
 					setUser(user);
 				})

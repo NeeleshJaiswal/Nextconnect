@@ -32,6 +32,7 @@ function PostFeed(props) {
 					</List>
 				</Paper>
 			</Container>
+			)
 		</ThemeProvider>
 	);
 }

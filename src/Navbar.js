@@ -17,7 +17,7 @@ function Navbar(props) {
 		userLoggedIn = (
 			<Grid container direction="row" justify="flex-end" alignItems="center">
 				{user && (
-					<Typography variant="h6" color="secondary" className={classes.right}>
+					<Typography variant="h6" color="textPrimary" className={classes.right}>
 						Hello {user.username}!
 					</Typography>
 				)}
