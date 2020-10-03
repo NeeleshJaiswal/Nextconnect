@@ -10,25 +10,25 @@ import styles from './styles/NavbarStyles';
 import { UserContext } from './context/user.context';
 
 function Navbar(props) {
-	const { user, setUser } = useContext(UserContext);
+	const { user, dispatch } = useContext(UserContext);
 	let userLoggedIn = <div />;
 	const { classes, history } = props;
-	if (user) {
+	if (user.isAuthenticated) {
 		userLoggedIn = (
 			<Grid container direction="row" justify="flex-end" alignItems="center">
 				{user && (
 					<Typography variant="h6" color="textPrimary" className={classes.right}>
-						Hello {user.username}!
+						Hello {user.user.username}!
 					</Typography>
 				)}
-				<Avatar alt={user.username} src={user.profileImageUrl} className={classes.small} />
+				<Avatar alt={user.user.username} src={user.user.profileImageUrl} className={classes.small} />
 				<Typography variant="h6" color="secondary">
 					<Link href="#" color="secondary" className={classes.right}>
 						<Tooltip title="Log out">
 							<IconButton
 								onClick={(e) => {
 									e.preventDefault();
-									setUser('');
+									dispatch({ type: 'REMOVE_USER' });
 									history.push('/');
 								}}
 							>
@@ -73,7 +73,7 @@ function Navbar(props) {
 					<Typography variant="h5" color="inherit">
 						Heroku
 					</Typography>
-					{user ? userLoggedIn : userLoggedOut}
+					{user.isAuthenticated ? userLoggedIn : userLoggedOut}
 				</Toolbar>
 			</AppBar>
 		</div>

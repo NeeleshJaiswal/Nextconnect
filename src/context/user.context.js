@@ -1,41 +1,38 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, useEffect, useReducer, createContext } from 'react';
+import axios from 'axios';
 import { apiCall, setTokenHeader } from '../services/api';
+import reducer from '../reducers/user.reducer';
 export const UserContext = createContext();
 
 export function UserProvider(props) {
-	const [ user, setUser ] = useState(null);
+	const initialState = {
+		isAuthenticated: false,
+		user: {}
+	};
+	const [ user, dispatch ] = useReducer(reducer, initialState);
 	const [ userDict, setUserDict ] = useState(null);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux');
+	useEffect(
+		() => {
+			const fetchData = async () => {
+				const result = await axios.get('http://localhost:8081/api/users');
 
-	// 		setData(result.data);
-	// 	};
+				setUserDict(result.data);
+			};
 
-	// 	fetchData();
-	// }, []);
+			fetchData();
+		},
+		[ user ]
+	);
 
 	const changeUser = (type, userData) => {
 		return new Promise((resolve, reject) => {
 			return apiCall('post', `http://localhost:8081/api/auth/${type}`, userData)
 				.then(({ token, ...user }) => {
 					localStorage.setItem('token', token);
-					setTokenHeader(token);
-
-					setUser(user);
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-		});
-	};
-	const changeUserDict = () => {
-		return new Promise((resolve, reject) => {
-			return apiCall('get', 'http://localhost:8081/api/users')
-				.then(({ ...users }) => {
-					localStorage.setItem('users', users);
-					setUserDict(users);
+					//setTokenHeader(token);
+					dispatch({ type: 'SET_CURRENT_USER', user });
+					//setUser(user);
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -44,8 +41,6 @@ export function UserProvider(props) {
 	};
 
 	return (
-		<UserContext.Provider value={{ user, setUser, changeUser, userDict, changeUserDict }}>
-			{props.children}
-		</UserContext.Provider>
+		<UserContext.Provider value={{ user, dispatch, changeUser, userDict }}>{props.children}</UserContext.Provider>
 	);
 }

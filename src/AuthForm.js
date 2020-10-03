@@ -10,7 +10,7 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ profileImageUrl, setProfileImageUrl ] = useState('');
-	const { changeUser, changeUserDict } = useContext(UserContext);
+	const { changeUser } = useContext(UserContext);
 	const { changePost } = useContext(PostContext);
 
 	const type = signup ? 'signup' : 'signin';
@@ -27,7 +27,6 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 							e.preventDefault();
 							changeUser(type, userData);
 							changePost();
-							changeUserDict();
 							history.push('/posts');
 						}}
 					>
