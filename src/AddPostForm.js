@@ -46,7 +46,7 @@ function AddPostForm({ classes, history }) {
 										text,
 										imageUrl,
 										isImage,
-										postedBy: user.id
+										postedBy: user.user.id
 									});
 									setText('');
 									setImageUrl('');

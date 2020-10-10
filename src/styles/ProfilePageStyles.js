@@ -1,15 +1,4 @@
 const styles = (theme) => ({
-	list: {
-		backgroundColor: 'inherit',
-		backdropFilter: 'inherit'
-	},
-	user: {
-		color: '#000000',
-		fontWeight: 'bold'
-	},
-	text: {
-		color: '#000035'
-	},
 	root: {
 		width: '100%',
 		margin: 0
@@ -19,6 +8,15 @@ const styles = (theme) => ({
 		marginLeft: 0,
 		marginRight: 0,
 		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`
+	},
+	fixed: {
+		marginTop: theme.spacing(14),
+		marginLeft: 0,
+		marginRight: 0,
+		width: '70%',
+		padding: `${theme.spacing(5)}px ${theme.spacing(5)}px ${theme.spacing(8)}px ${theme.spacing(5)}px`,
+		position: 'sticky',
+		top: theme.spacing(14)
 	}
 });
 

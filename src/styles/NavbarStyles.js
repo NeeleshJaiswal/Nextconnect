@@ -22,6 +22,15 @@ const styles = (theme) => ({
 	small: {
 		width: theme.spacing(5),
 		height: theme.spacing(5)
+	},
+	link: {
+		color: 'white',
+		textDecoration: 'none',
+		'&:hover': {
+			color: 'blue',
+			textDecoration: 'underline',
+			cursor: 'pointer'
+		}
 	}
 });
 

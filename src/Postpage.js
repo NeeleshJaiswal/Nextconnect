@@ -5,7 +5,7 @@ import AddPostForm from './AddPostForm';
 export default function Postpage() {
 	const { Posts } = useContext(PostContext);
 
-	if (Posts) {
+	if (Posts.posts) {
 		return (
 			<div
 				style={{

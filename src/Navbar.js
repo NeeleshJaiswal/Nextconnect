@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography, Link, Grid, Tooltip, Avatar } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar, Typography, Grid, Link, Tooltip, Avatar } from '@material-ui/core';
 import React, { useContext } from 'react';
 import DynamicFeedOutlinedIcon from '@material-ui/icons/DynamicFeedOutlined';
 import { withRouter } from 'react-router-dom';
@@ -8,12 +8,16 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles/NavbarStyles';
 import { UserContext } from './context/user.context';
+import { Link as Linker } from 'react-router-dom';
 
 function Navbar(props) {
 	const { user, dispatch } = useContext(UserContext);
+
 	let userLoggedIn = <div />;
 	const { classes, history } = props;
+
 	if (user.isAuthenticated) {
+		const str = '/profile/' + user.user.id;
 		userLoggedIn = (
 			<Grid container direction="row" justify="flex-end" alignItems="center">
 				{user && (
@@ -21,7 +25,13 @@ function Navbar(props) {
 						Hello {user.user.username}!
 					</Typography>
 				)}
-				<Avatar alt={user.user.username} src={user.user.profileImageUrl} className={classes.small} />
+				<Linker to={str}>
+					<Avatar alt={user.user.username} src={user.user.profileImageUrl} className={classes.small} />
+				</Linker>
+				{/* <Link href={str}>
+					<Avatar alt={user.user.username} src={user.user.profileImageUrl} className={classes.small} />
+				</Link> */}
+
 				<Typography variant="h6" color="secondary">
 					<Link href="#" color="secondary" className={classes.right}>
 						<Tooltip title="Log out">
@@ -70,9 +80,17 @@ function Navbar(props) {
 					<IconButton color="inherit">
 						<DynamicFeedOutlinedIcon style={{ fontSize: '2rem' }} />
 					</IconButton>
-					<Typography variant="h5" color="inherit">
-						Heroku
-					</Typography>
+					{user.isAuthenticated ? (
+						<Linker to="/posts">
+							<Typography className={classes.link} variant="h5" color="inherit">
+								Heroku
+							</Typography>
+						</Linker>
+					) : (
+						<Typography variant="h5" color="inherit">
+							Heroku
+						</Typography>
+					)}
 					{user.isAuthenticated ? userLoggedIn : userLoggedOut}
 				</Toolbar>
 			</AppBar>

@@ -14,9 +14,9 @@ function PostFeed(props) {
 	const { Posts } = useContext(PostContext);
 	const { classes } = props;
 	let postsItems;
-	if (Posts) {
+	if (Posts.posts) {
 		const { posts } = Posts;
-		postsItems = posts.map((post, i) => <PostItem key={i} post={post} />);
+		postsItems = posts.map((post, i) => <PostItem key={i} post={post} flag={true} />);
 	} else {
 		postsItems = <div />;
 	}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, createContext } from 'react';
 import axios from 'axios';
-import { apiCall, setTokenHeader } from '../services/api';
+import { apiCall } from '../services/api';
 import reducer from '../reducers/user.reducer';
 export const UserContext = createContext();
 
@@ -30,9 +30,8 @@ export function UserProvider(props) {
 			return apiCall('post', `http://localhost:8081/api/auth/${type}`, userData)
 				.then(({ token, ...user }) => {
 					localStorage.setItem('token', token);
-					//setTokenHeader(token);
+
 					dispatch({ type: 'SET_CURRENT_USER', user });
-					//setUser(user);
 				})
 				.catch((err) => {
 					console.log(err.message);

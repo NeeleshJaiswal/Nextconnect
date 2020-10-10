@@ -14,7 +14,7 @@ function AddCommentForm({ postId, classes, history }) {
 			className={classes.form}
 			onSubmit={(e) => {
 				e.preventDefault();
-				addCommentToPost({ text, commentedBy: user.id, commentedOn: postId });
+				addCommentToPost({ text, commentedBy: user.user.id, commentedOn: postId });
 				setText('');
 
 				history.push('/posts');

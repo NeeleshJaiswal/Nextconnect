@@ -6,6 +6,7 @@ import styles from './styles/PageContentStyles';
 import { UserProvider } from './context/user.context';
 import { PostProvider } from './context/post.context';
 import './PostContent.css';
+
 function PageContent(props) {
 	const { classes } = props;
 	return (

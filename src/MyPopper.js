@@ -35,8 +35,8 @@ function MyPopper({ userId, postId, history }) {
 
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popper' : undefined;
-	if (user) {
-		if (user.id !== userId) {
+	if (user.user) {
+		if (user.user.id !== userId) {
 			return <div />;
 		}
 	}
