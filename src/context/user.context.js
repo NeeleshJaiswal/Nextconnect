@@ -32,9 +32,11 @@ export function UserProvider(props) {
 					localStorage.setItem('token', token);
 
 					dispatch({ type: 'SET_CURRENT_USER', user });
+					resolve();
 				})
 				.catch((err) => {
 					console.log(err.message);
+					reject();
 				});
 		});
 	};

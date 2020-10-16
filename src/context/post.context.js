@@ -11,9 +11,11 @@ export function PostProvider(props) {
 			return apiCallWithToken('get', 'http://localhost:8081/api/posts')
 				.then(({ ...posts }) => {
 					dispatch({ type: 'GET_POST', posts });
+					resolve();
 				})
 				.catch((err) => {
 					console.log(err.message);
+					reject();
 				});
 		});
 	};

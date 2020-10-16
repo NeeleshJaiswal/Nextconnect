@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography, FormControl, Input, InputLabel, Button, Container } from '@material-ui/core';
+import { Grid, Paper, Typography, FormControl, Input, InputLabel, Button, Container, Modal } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles/FormStyles';
 import React, { useContext, useState } from 'react';
@@ -12,9 +12,21 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 	const [ profileImageUrl, setProfileImageUrl ] = useState('');
 	const { changeUser } = useContext(UserContext);
 	const { changePost } = useContext(PostContext);
-
+	const [ open, setOpen ] = useState(false);
 	const type = signup ? 'signup' : 'signin';
 	const userData = signup ? { email, username, password, profileImageUrl } : { email, password };
+
+	const body = (
+		<div className={classes.modal}>
+			<h2 id="simple-modal-title">ERROR!!</h2>
+			<p id="simple-modal-description">
+				{signup ? 'Sorry, that username and/or email is taken' : 'Invalid Email/Password'}
+			</p>
+			<button type="button" onClick={() => setOpen(false)}>
+				CLOSE
+			</button>
+		</div>
+	);
 
 	return (
 		<Container maxWidth="sm">
@@ -25,9 +37,18 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 						className={classes.form}
 						onSubmit={(e) => {
 							e.preventDefault();
-							changeUser(type, userData);
-							changePost();
-							history.push('/posts');
+							changeUser(type, userData)
+								.then(() => {
+									changePost()
+										.then(() => {
+											history.push('/posts');
+										})
+										.catch((err) => console.log(err));
+								})
+								.catch((err) => {
+									console.log(err);
+									setOpen(true);
+								});
 						}}
 					>
 						<FormControl margin="normal" required fullWidth>
@@ -82,6 +103,14 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 							{buttonText}
 						</Button>
 					</form>
+					<Modal
+						open={open}
+						onClose={() => setOpen(false)}
+						aria-labelledby="simple-modal-title"
+						aria-describedby="simple-modal-description"
+					>
+						{body}
+					</Modal>
 				</Grid>
 			</Paper>
 		</Container>
