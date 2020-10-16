@@ -1,10 +1,11 @@
-import { Grid, Paper, Typography, FormControl, Input, InputLabel, Button, Container, Modal } from '@material-ui/core';
+import { Grid, Paper, Typography, FormControl, Input, InputLabel, Button, Container, Modal,TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles/FormStyles';
 import React, { useContext, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { UserContext } from './context/user.context';
 import { PostContext } from './context/post.context';
+import ImageUpload from './components/ImageUpload';
 function AuthForm({ signup, buttonText, heading, classes, history }) {
 	const [ email, setEmail ] = useState('');
 	const [ username, setUsername ] = useState('');
@@ -33,7 +34,7 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 			<Paper className={classes.paper}>
 				<Grid container direction="column" justify="center" alignItems="center">
 					<Typography variant="h5">{heading}</Typography>
-					<form
+					<form key={1}
 						className={classes.form}
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -87,22 +88,26 @@ function AuthForm({ signup, buttonText, heading, classes, history }) {
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</FormControl>
-						{signup && (
-							<FormControl margin="normal" fullWidth>
-								<InputLabel htmlFor="profileImageUrl">Profile Image Url</InputLabel>
-								<Input
-									className={classes.input}
-									id="profileImageUrl"
-									name="profileImageUrl"
-									value={profileImageUrl}
-									onChange={(e) => setProfileImageUrl(e.target.value)}
-								/>
-							</FormControl>
-						)}
+						{signup && (<FormControl margin="normal" required fullWidth>
+                                
+                                <TextField
+                                    className={classes.input}
+                                    id="profileImageUrl"
+									label="Profile Image Url"
+                                    name="profileImageUrl"
+									helperText="Click on Choose File button below to select your profile image"
+                                    value={profileImageUrl}
+                                    disabled={true}
+                                />
+                            </FormControl>)
+							
+						}
 						<Button variant="outlined" type="submit" fullWidth color="inherit" className={classes.submit}>
 							{buttonText}
 						</Button>
 					</form>
+
+					{signup && (<ImageUpload setUrl={setProfileImageUrl}/>)}
 					<Modal
 						open={open}
 						onClose={() => setOpen(false)}
